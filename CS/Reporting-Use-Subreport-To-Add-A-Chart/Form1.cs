@@ -107,7 +107,7 @@ namespace CreateSubreportsInCode {
                                 ReportSource = CreateSubReport(),
                                 GenerateOwnPages = true,
                                 ParameterBindings = {
-                                    new ParameterBinding("srptCategory",null,"Products.CategoryID")
+                                    new ParameterBinding("subreportCategory",null,"Products.CategoryID")
                                 }
                             }
                         },
@@ -139,7 +139,7 @@ namespace CreateSubreportsInCode {
                 },
                 Parameters = {
                     new Parameter(){
-                        Name = "srptCategory",
+                        Name = "subreportCategory",
                         Type = typeof(System.Int32)
                     }
                 },

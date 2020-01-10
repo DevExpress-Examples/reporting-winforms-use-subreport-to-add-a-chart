@@ -92,7 +92,7 @@ Namespace CreateSubreportsInCode
                     New GroupFooterBand() With { _
                         .Controls = { _
                             New XRSubreport() With { _
-                                .ReportSource = CreateSubReport(), .GenerateOwnPages = True, .ParameterBindings = { New ParameterBinding("srptCategory",Nothing,"Products.CategoryID") } _
+                                .ReportSource = CreateSubReport(), .GenerateOwnPages = True, .ParameterBindings = { New ParameterBinding("subreportCategory",Nothing,"Products.CategoryID") } _
                             } _
                         }, _
                         _
@@ -120,7 +120,7 @@ Namespace CreateSubreportsInCode
                 _
                 .Parameters = { _
                     New Parameter() With { _
-                        .Name = "srptCategory", _
+                        .Name = "subreportCategory", _
                         .Type = GetType(System.Int32) _
                     } _
                 }, _
