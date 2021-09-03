@@ -1,28 +1,27 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Collections.Generic;
 using DevExpress.XtraReports.UI;
 using DevExpress.DataAccess.Sql;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.XtraPrinting;
 using DevExpress.XtraCharts;
 using DevExpress.XtraReports.Parameters;
-using System.IO;
-
-namespace CreateSubreportsInCode {
-    public partial class Form1 : Form {
+namespace CreateSubreportsInCode
+{
+    public partial class Form1 : DevExpress.XtraEditors.XtraForm
+    {
         public Form1() {
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e) {
             XtraReport mainReport = CreateMainReport();
-            ReportDesignTool designTool = new ReportDesignTool(mainReport);
-            // Comment the next line to load the generated report in Report Designer.
+            // Report Designer loads the report.
+            //ReportDesignTool designTool = new ReportDesignTool(mainReport);
             //designTool.ShowRibbonDesignerDialog();
             ReportPrintTool printTool = new ReportPrintTool(mainReport);
-            // Comment the next line to load the generated report in Print Preview.
+            // Print Preview loads the report.
             printTool.ShowRibbonPreviewDialog();
             Application.Exit();
         }
@@ -153,12 +152,16 @@ namespace CreateSubreportsInCode {
             return report;
         }
         public object CreateDataSource() {
-            Access97ConnectionParameters connectionParameters = new Access97ConnectionParameters(Path.Combine(Path.GetDirectoryName(typeof(Form1).Assembly.Location), "Data/nwind.mdb"), "", "");
+            SQLiteConnectionParameters connectionParameters = 
+                new SQLiteConnectionParameters("Data\\nwind.db", "");
             SqlDataSource sqlDataSource = new SqlDataSource(connectionParameters);
 
             CustomSqlQuery queryProducts = new CustomSqlQuery() {
                 Name = "Products",
-                Sql = "SELECT Products.ProductID,Products.ProductName,Products.UnitPrice,Products.QuantityPerUnit,Categories.CategoryID,Categories.CategoryName,Categories.Description,Categories.Picture FROM Products INNER JOIN Categories ON Products.CategoryID=Categories.CategoryID"
+                Sql = "SELECT " +
+                "Products.ProductID,Products.ProductName,Products.UnitPrice,Products.QuantityPerUnit," +
+                "Categories.CategoryID,Categories.CategoryName,Categories.Description,Categories.Picture " +
+                "FROM Products INNER JOIN Categories ON Products.CategoryID=Categories.CategoryID"
             };
             sqlDataSource.Queries.Add(queryProducts);
             sqlDataSource.Fill();

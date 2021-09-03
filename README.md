@@ -6,7 +6,7 @@
 <!-- default file list -->
 *Files to look at*:
 
-* [Form1.cs](./CS/Use-Subreport-To-Add-A-Chart/Form1.cs)
+* [Form1.cs](./CS/Reporting-Use-Subreport-To-Add-A-Chart/Form1.cs)
 <!-- default file list end -->
 # Use Subreports to Add a Chart
 

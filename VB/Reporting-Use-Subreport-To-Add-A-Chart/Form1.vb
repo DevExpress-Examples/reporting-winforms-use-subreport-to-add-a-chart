@@ -1,18 +1,15 @@
-﻿Imports System
-Imports System.Drawing
-Imports System.Windows.Forms
-Imports System.Collections.Generic
-Imports DevExpress.XtraReports.UI
-Imports DevExpress.DataAccess.Sql
-Imports DevExpress.DataAccess.ConnectionParameters
-Imports DevExpress.XtraPrinting
-Imports DevExpress.XtraCharts
-Imports DevExpress.XtraReports.Parameters
+#Region "usings"
 Imports System.IO
-
+Imports DevExpress.DataAccess.ConnectionParameters
+Imports DevExpress.DataAccess.Sql
+Imports DevExpress.XtraCharts
+Imports DevExpress.XtraPrinting
+Imports DevExpress.XtraReports.Parameters
+Imports DevExpress.XtraReports.UI
+#End Region
 Namespace CreateSubreportsInCode
     Partial Public Class Form1
-        Inherits Form
+        Inherits DevExpress.XtraEditors.XtraForm
 
         Public Sub New()
             InitializeComponent()
@@ -21,127 +18,147 @@ Namespace CreateSubreportsInCode
         Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
             Dim mainReport As XtraReport = CreateMainReport()
             Dim designTool As New ReportDesignTool(mainReport)
-            ' Comment the next line to load the generated report in Report Designer.
-            'designTool.ShowRibbonDesignerDialog();
+            ' Report Designer loads the report.
+            'Dim designTool As New ReportDesignTool(mainReport)
+            'designTool.ShowRibbonDesignerDialog()
             Dim printTool As New ReportPrintTool(mainReport)
-            ' Comment the next line to load the generated report in Print Preview.
+            ' Print Preview loads the report.
             printTool.ShowRibbonPreviewDialog()
             Application.Exit()
         End Sub
+#Region "CreateMainReport"
         Private Function CreateMainReport() As XtraReport
-            Dim report As New XtraReport() With { _
-                .Bands = { _
-                    New GroupHeaderBand() With { _
-                        .GroupFields = { New GroupField("CategoryID") }, _
-                        .Controls = { _
-                            New XRLabel() With { _
-                                .ExpressionBindings = { New ExpressionBinding("BeforePrint", "Text", "[CategoryName]") }, _
-                                .BoundsF = New RectangleF(0,0,300,25), _
-                                .Font = New Font(New FontFamily("Arial"),12,FontStyle.Bold) _
-                            }, _
-                            New XRLabel() With { _
-                                .ExpressionBindings = { New ExpressionBinding("BeforePrint", "Text", "[Description]") }, _
-                                .BoundsF = New RectangleF(0,50,300,25), _
-                                .Font = New Font(New FontFamily("Arial"),9) _
-                            }, _
-                            New XRPictureBox() With { _
-                                .ExpressionBindings = { New ExpressionBinding("BeforePrint", "ImageSource", "[Picture]") }, _
-                                .BoundsF = New RectangleF(500,0,150,50), _
-                                .Sizing = ImageSizeMode.ZoomImage _
-                            }, _
-                            New XRLabel() With { _
-                                .Text = "Product Name", _
-                                .BoundsF = New RectangleF(50,100,400,25), _
-                                .Font = New Font(New FontFamily("Arial"),9,FontStyle.Bold) _
-                            }, _
-                            New XRLabel() With { _
-                                .Text = "Qty Per Unit", _
-                                .BoundsF = New RectangleF(450,100,100,25), _
-                                .Font = New Font(New FontFamily("Arial"),9,FontStyle.Bold) _
-                            }, _
-                            New XRLabel() With { _
-                                .Text = "Unit Price", _
-                                .BoundsF = New RectangleF(550,100,100,25), _
-                                .TextAlignment = TextAlignment.TopRight, _
-                                .Font = New Font(New FontFamily("Arial"),9,FontStyle.Bold) _
-                            } _
-                        } _
-                    }, _
-                    New DetailBand() With { _
-                        .Controls = { _
-                            New XRLabel() With { _
-                                .ExpressionBindings = { New ExpressionBinding("BeforePrint", "Text", "[ProductName]") }, _
-                                .BoundsF = New RectangleF(50,0,400,25), _
-                                .Font = New Font(New FontFamily("Arial"),9) _
-                            }, _
-                            New XRLabel() With { _
-                                .ExpressionBindings = { New ExpressionBinding("BeforePrint", "Text", "[QuantityPerUnit]") }, _
-                                .BoundsF = New RectangleF(450,0,100,25), _
-                                .Font = New Font(New FontFamily("Arial"),9) _
-                            }, _
-                            New XRLabel() With { _
-                                .ExpressionBindings = { New ExpressionBinding("BeforePrint", "Text", "[UnitPrice]") }, _
-                                .BoundsF = New RectangleF(550,0,100,25), _
-                                .Font = New Font(New FontFamily("Arial"),9), _
-                                .TextAlignment = TextAlignment.TopRight, _
-                                .TextFormatString = "{0:c2}" _
-                            } _
-                        }, _
-                        .HeightF = 25 _
-                    }, _
-                    New GroupFooterBand() With { _
-                        .Controls = { _
-                            New XRSubreport() With { _
-                                .ReportSource = CreateSubReport(), .GenerateOwnPages = True, .ParameterBindings = { New ParameterBinding("subreportCategory",Nothing,"Products.CategoryID") } _
-                            } _
-                        }, _
-                        _
-                        .PageBreak = PageBreak.BeforeBand _
-                    } _
-                }, _
-                .DataSource = CreateDataSource(), _
-                .DataMember = "Products" _
+            Dim report As New XtraReport()
+            report.DataSource = CreateDataSource()
+            report.DataMember = "Products"
+
+            ' Creates a Group Header Band.
+            Dim groupHBand As New GroupHeaderBand()
+            groupHBand.GroupFields.Add(New GroupField("CategoryID"))
+            Dim label1 As New XRLabel() With {
+                .BoundsF = New RectangleF(0, 0, 300, 25),
+                .Font = New Font(New FontFamily("Arial"), 12, FontStyle.Bold)
             }
+            Dim label2 As New XRLabel() With {
+                .BoundsF = New RectangleF(0, 50, 300, 25),
+                .Font = New Font(New FontFamily("Arial"), 9)
+            }
+            Dim pictureBox1 As New XRPictureBox With {
+                .BoundsF = New RectangleF(500, 0, 150, 50),
+                .Sizing = ImageSizeMode.ZoomImage
+            }
+            Dim label3 As New XRLabel() With {
+                .Text = "Product Name",
+                .BoundsF = New RectangleF(50, 100, 400, 25),
+                .Font = New Font(New FontFamily("Arial"), 9, FontStyle.Bold)
+            }
+            Dim label4 As New XRLabel() With {
+                .Text = "Qty Per Unit",
+                .BoundsF = New RectangleF(450, 100, 100, 25),
+                .Font = New Font(New FontFamily("Arial"), 9, FontStyle.Bold)
+            }
+            Dim label5 As New XRLabel() With {
+                .Text = "Unit Price",
+                .BoundsF = New RectangleF(550, 100, 100, 25),
+                .TextAlignment = TextAlignment.TopRight,
+                .Font = New Font(New FontFamily("Arial"), 9, FontStyle.Bold)
+            }
+            label1.ExpressionBindings.Add(
+                New ExpressionBinding("BeforePrint", "Text", "[CategoryName]"))
+            label2.ExpressionBindings.Add(
+                New ExpressionBinding("BeforePrint", "Text", "[Description]"))
+            pictureBox1.ExpressionBindings.Add(
+                New ExpressionBinding("BeforePrint", "ImageSource", "[Picture]"))
+            groupHBand.Controls.AddRange(
+                New XRControl() {label1, label2, pictureBox1, label3, label4, label5})
+
+            ' Creates a Detail Band.
+            Dim dtlBand As New DetailBand()
+            dtlBand.HeightF = 25
+            Dim label6 As New XRLabel() With {
+                .BoundsF = New RectangleF(50, 0, 400, 25),
+                .Font = New Font(New FontFamily("Arial"), 9)
+            }
+            Dim label7 As New XRLabel() With {
+                .BoundsF = New RectangleF(450, 0, 100, 25),
+                .Font = New Font(New FontFamily("Arial"), 9)
+            }
+            Dim label8 As New XRLabel() With {
+                .BoundsF = New RectangleF(550, 0, 100, 25),
+                .Font = New Font(New FontFamily("Arial"), 9),
+                .TextAlignment = TextAlignment.TopRight,
+                .TextFormatString = "{0:c2}"
+            }
+            label6.ExpressionBindings.Add(
+                New ExpressionBinding("BeforePrint", "Text", "[ProductName]"))
+            label7.ExpressionBindings.Add(
+                New ExpressionBinding("BeforePrint", "Text", "[QuantityPerUnit]"))
+            label8.ExpressionBindings.Add(
+                New ExpressionBinding("BeforePrint", "Text", "[UnitPrice]"))
+            dtlBand.Controls.AddRange(
+                New XRControl() {label6, label7, label8})
+
+
+            ' Creates a Group Footer Band with a Subreport.
+            Dim groupFBand As New GroupFooterBand()
+            groupFBand.PageBreak = PageBreak.BeforeBand
+            Dim subreport1 As New XRSubreport() With {
+                .ReportSource = CreateSubReport(),
+                .GenerateOwnPages = True
+            }
+            subreport1.ParameterBindings.Add(
+                New ParameterBinding("subreportCategory",
+                                     Nothing,
+                                     "Products.CategoryID"))
+            groupFBand.Controls.Add(subreport1)
+
+            report.Bands.AddRange(
+                New Band() {groupHBand, dtlBand, groupFBand})
+
             Return report
         End Function
+#End Region
+#Region "CreateSubReport"
         Private Function CreateSubReport() As XtraReport
-            Dim report As New XtraReport() With { _
-                .Bands = { _
-                    New DetailBand() With { _
-                        .Controls = { _
-                            New XRChart() With { _
-                                .BoundsF = New RectangleF(0,0,900,650), .DataMember = "Products", .Series = { _
-                                    New Series() With {.ArgumentDataMember = "ProductName"} _
-                                } _
-                            } _
-                        } _
-                    } _
-                }, _
-                _
-                .Parameters = { _
-                    New Parameter() With { _
-                        .Name = "subreportCategory", _
-                        .Type = GetType(System.Int32) _
-                    } _
-                }, _
-                _
-                .Landscape = True, _
-                .DataSource = CreateDataSource() _
+            Dim report As New XtraReport()
+            ' Add a Detail Band with Chart.
+            Dim dtlBand As New DetailBand()
+            Dim chartControl1 As New XRChart() With {
+                .BoundsF = New RectangleF(0, 0, 900, 650),
+                .DataMember = "Products"
             }
-            Dim chart = TryCast(report.Bands(0).Controls(0), XRChart)
-            chart.Parameters.Add(New XRControlParameter("chartCategory", report.Parameters(0)))
-            chart.Series(0).FilterString = "CategoryID=?chartCategory"
-            chart.Series(0).ValueDataMembers.AddRange(New String() { "UnitPrice"})
+            chartControl1.Series.Add(
+                New Series() With {
+                .ArgumentDataMember = "ProductName"})
+            dtlBand.Controls.Add(chartControl1)
+            report.Bands.Add(dtlBand)
+            ' Add a parameter.
+            report.Parameters.Add(New Parameter() With {
+                                  .Name = "subreportCategory",
+                                  .Type = GetType(System.Int32)
+                                  })
+
+            report.Landscape = True
+            report.DataSource = CreateDataSource()
+            ' Configure the chart.
+            chartControl1.Parameters.Add(New XRControlParameter("chartCategory", report.Parameters(0)))
+            chartControl1.Series(0).FilterString = "CategoryID=?chartCategory"
+            chartControl1.Series(0).ValueDataMembers.AddRange(New String() {"UnitPrice"})
+
             Return report
         End Function
+#End Region
+
         Public Function CreateDataSource() As Object
-            Dim connectionParameters As New Access97ConnectionParameters(Path.Combine(Path.GetDirectoryName(GetType(Form1).Assembly.Location), "Data/nwind.mdb"), "", "")
+            Dim connectionParameters As New SQLiteConnectionParameters("Data\\nwind.db", "")
             Dim sqlDataSource As New SqlDataSource(connectionParameters)
 
-            Dim queryProducts As New CustomSqlQuery() With { _
-                .Name = "Products", _
-                .Sql = "SELECT Products.ProductID,Products.ProductName,Products.UnitPrice,Products.QuantityPerUnit,Categories.CategoryID,Categories.CategoryName,Categories.Description,Categories.Picture FROM Products INNER JOIN Categories ON Products.CategoryID=Categories.CategoryID" _
-            }
+            Dim queryProducts As New CustomSqlQuery() With {
+                .Name = "Products",
+                .Sql = "SELECT " +
+                "Products.ProductID,Products.ProductName,Products.UnitPrice,Products.QuantityPerUnit," +
+                "Categories.CategoryID,Categories.CategoryName,Categories.Description,Categories.Picture " +
+                "FROM Products INNER JOIN Categories ON Products.CategoryID=Categories.CategoryID"}
             sqlDataSource.Queries.Add(queryProducts)
             sqlDataSource.Fill()
 

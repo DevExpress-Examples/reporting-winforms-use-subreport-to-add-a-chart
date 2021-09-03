@@ -24,10 +24,10 @@
         ''' </summary>
         Private Sub InitializeComponent()
             Me.SuspendLayout()
-            ' 
-            ' Form1
-            ' 
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6F, 13F)
+            '
+            'Form1
+            '
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(800, 450)
             Me.Name = "Form1"
@@ -36,7 +36,7 @@
 
         End Sub
 
-        #End Region
+#End Region
     End Class
 End Namespace
 
