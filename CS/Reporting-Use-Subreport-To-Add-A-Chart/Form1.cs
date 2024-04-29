@@ -1,3 +1,4 @@
+#region usings
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -7,6 +8,7 @@ using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.XtraPrinting;
 using DevExpress.XtraCharts;
 using DevExpress.XtraReports.Parameters;
+#endregion
 namespace CreateSubreportsInCode
 {
     public partial class Form1 : DevExpress.XtraEditors.XtraForm
@@ -25,6 +27,7 @@ namespace CreateSubreportsInCode
             printTool.ShowRibbonPreviewDialog();
             Application.Exit();
         }
+        #region CreateMainReport
         private XtraReport CreateMainReport() {
             XtraReport report = new XtraReport() {
                 Bands = {
@@ -118,6 +121,8 @@ namespace CreateSubreportsInCode
             };
             return report;
         }
+        #endregion
+        #region CreateSubReport
         private XtraReport CreateSubReport() {
             XtraReport report = new XtraReport()
             {
@@ -151,6 +156,7 @@ namespace CreateSubreportsInCode
             chart.Series[0].ValueDataMembers.AddRange(new string[] { "UnitPrice"});
             return report;
         }
+        #endregion
         public object CreateDataSource() {
             SQLiteConnectionParameters connectionParameters = 
                 new SQLiteConnectionParameters("Data\\nwind.db", "");
