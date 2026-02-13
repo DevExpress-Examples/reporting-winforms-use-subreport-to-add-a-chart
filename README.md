@@ -46,7 +46,7 @@ Review the guidelines aided in the creation of this example.
 - [WinForms End-User Designer - How to customize the Chart Wizard](https://github.com/DevExpress-Examples/Reporting_winforms-end-user-designer-how-to-customize-the-chart-wizard-t230406)
 - [How to display a chart in a group footer (in a WinForms application)](https://github.com/DevExpress-Examples/Reporting_how-to-display-a-chart-in-a-group-footer-in-a-winforms-application-t228341)
 <!-- feedback -->
-## Does this example address your development requirements/objectives?
+## Does This Example Address Your Development Requirements/Objectives?
 
 [<img src="https://www.devexpress.com/support/examples/i/yes-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=reporting-winforms-use-subreport-to-add-a-chart&~~~was_helpful=yes) [<img src="https://www.devexpress.com/support/examples/i/no-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=reporting-winforms-use-subreport-to-add-a-chart&~~~was_helpful=no)
 
